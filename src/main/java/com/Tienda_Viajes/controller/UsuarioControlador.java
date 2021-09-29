@@ -18,7 +18,7 @@ import com.Tienda_Viajes.model.Persona;
 
 @Controller
 @RequestMapping("/user")
-public class Controlador {
+public class UsuarioControlador {
 	
 	
 	@Autowired
@@ -41,11 +41,11 @@ public class Controlador {
 	}
 	
 	
-	@ResponseBody
+	
 	@GetMapping("/eliminar")
-	public void eliminar(int id) {
+	public String eliminar(int id) {
 		 service.delete(id);
-		
+		return "redirect:/user/listar";
 	}
 	
 	@GetMapping("/crear")
