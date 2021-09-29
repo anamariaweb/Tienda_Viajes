@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+		<div class="container mt=4">
+			<a class="btn btn-success" href="/user/crear">Crear</a>
+			<table>
+				<thead>
+					<tr>
+						<th>CEDULA</th>
+						<th>NOMBRE</th>
+						<th>CORREO</th>
+						<th>USUARIO</th>
+						<th>PASSWORD</th>
+						<th>ACCIONES</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="personas:${personas}">
+						<td th:text="${personas.Cedula}"></td>
+						<td th:text="${personas.Nombre}"></td>
+						<td th:text="${personas.Correo}"></td>
+						<td th:text="${personas.Usuario}"></td>
+						<td th:text="${personas.Clave}"></td>
+						<td>
+						<a class="btn btn-warning" th:href="@{/user/editar(id=${personas.Cedula})}">Editar</a>
+						<a class="btn btn-danger" th:href="@{/user/eliminar(id=${personas.Cedula})}">Eliminar</a>
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+</body>
+</html>

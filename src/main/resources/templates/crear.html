@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+		<div class="container mt=4">
+		
+		<form action="#" th:action="@{/user/guardar}" method="POST">
+		<div class="mb-3">
+			<label class="form-label" for="cedula">Cedula</label>
+			<input type="text" name="cedula" class="form-control">
+		</div>
+		
+		<div class="mb-3">
+			<label class="form-label" for="nombre">Nombre</label>
+			<input type="text" name="nombre" class="form-control">
+		</div>
+		
+		
+		<div class="mb-3">
+			<label class="form-label" for="correo">Correo</label>
+			<input type="text" name="correo-" class="form-control">
+		</div>
+		
+		<div class="mb-3">
+			<label class="form-label" for="usuario">Usuario</label>
+			<input type="text" name="usuario" class="form-control">
+		</div>
+		
+		<div class="mb-3">
+			<label class="form-label" for="clave">Clave</label>
+			<input type="password" name="clave" class="form-control">
+		</div>
+		
+		
+		
+		<button type="submit" class="btn btn-primary">Enviar</button>
+		
+		</form>
+		
+		
+			
+		</div>
+</body>
+</html>
