@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>LISTA DE CLIENTES</title>
+<!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+		<div class="container mt=4">
+			<h1>LISTA DE CLIENTES</h1>
+			<p><a class="btn btn-primary" href="/client/crear">Crear</a></p>
+			<table class="table table-bordered border-primary">
+				<thead>
+					<tr>
+						<th>CEDULA</th>
+						<th>NOMBRE</th>
+						<th>DIRECCION</th>
+						<th>TELEFONO</th>
+						<th>CORREO</th>
+						<th>ACCIONES</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="cliente:${clientes}">
+						<td th:text="${cliente.Cedula}"></td>
+						<td th:text="${cliente.Nombre}"></td>
+						<td th:text="${cliente.Direccion}"></td>
+						<td th:text="${cliente.Telefono}"></td>
+						<td th:text="${cliente.Correo}"></td>
+						<td>
+						<a class="btn btn-outline-success" th:href="@{/client/editar(id=${cliente.Cedula})}">Editar</a>
+						<a class="btn btn-outline-danger" th:href="@{/client/eliminar(id=${cliente.Cedula})}">Eliminar</a>
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+</body>
+</html>

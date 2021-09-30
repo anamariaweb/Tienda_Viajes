@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>LISTA DE USUARIOS</title>
+<!-- CSS only -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+	rel="stylesheet">
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">TiendaViajes</a>
+			<button class="navbar-toggler" type="button"
+				data-bs-toggle="collapse" data-bs-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+				<div class="navbar-nav">
+					<a class="nav-link active" aria-current="page" href="/user/listar">Usuarios</a> 
+					<a class="nav-link" href="/client/listar">Clientes</a> 
+					<a class="nav-link" href="#">Proveedores</a> 
+					<a class="nav-link" href="#">Productos</a> 
+					<a class="nav-link" href="#">Ventas</a> 
+					
+				</div>
+			</div>
+		</div>
+	</nav>
+	<div class="container mt=4">
+
+
+		<h1>LISTA DE USUARIOS</h1>
+		<p>
+			<a class="btn btn-primary" href="/user/crear">Crear</a>
+		</p>
+		<table class="table table-bordered border-primary">
+			<thead>
+				<tr>
+					<th>CEDULA</th>
+					<th>NOMBRE</th>
+					<th>CORREO</th>
+					<th>USUARIO</th>
+					<th>PASSWORD</th>
+					<th>ACCIONES</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="personas:${personas}">
+					<td th:text="${personas.Cedula}"></td>
+					<td th:text="${personas.Nombre}"></td>
+					<td th:text="${personas.Correo}"></td>
+					<td th:text="${personas.Usuario}"></td>
+					<td th:text="${personas.Clave}"></td>
+					<td><a class="btn btn-outline-success"
+						th:href="@{/user/editar(id=${personas.Cedula})}">Editar</a> <a
+						class="btn btn-outline-danger"
+						th:href="@{/user/eliminar(id=${personas.Cedula})}">Eliminar</a></td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+</body>
+</html>
