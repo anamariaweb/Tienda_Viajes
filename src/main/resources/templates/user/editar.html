@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>EDITAR USUARIO</title>
-<!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<head th:replace="layouts/base::head(titulo='EDITAR USUARIO')"></head>
 <body>
+	<header th:replace="layouts/base::header"></header>
 		<div class="container mt=4">
 		<h1>
 		EDITAR USUARIO
@@ -15,7 +11,7 @@
 		<form action="#" th:action="@{/user/guardar}" method="POST" th:object="${persona}">
 		<div class="mb-3">
 			<label class="form-label" for="cedula">Cedula</label>
-			<input type="text" name="cedula" class="form-control" th:field="${persona.Cedula}" disabled>
+			<input type="text" name="cedula" class="form-control" th:field="${persona.Cedula}" readonly required="required">
 		</div>
 		
 		<div class="mb-3">

@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-<meta charset="ISO-8859-1">
-<title>LISTA DE CLIENTES</title>
-<!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<head th:replace="layouts/base::head(titulo='LISTA DE CLIENTES')"></head>
 <body>
+	
+	<header th:replace="layouts/base::header"></header>
 		<div class="container mt=4">
 			<h1>LISTA DE CLIENTES</h1>
 			<p><a class="btn btn-primary" href="/client/crear">Crear</a></p>
@@ -30,7 +27,7 @@
 						<td th:text="${cliente.Correo}"></td>
 						<td>
 						<a class="btn btn-outline-success" th:href="@{/client/editar(id=${cliente.Cedula})}">Editar</a>
-						<a class="btn btn-outline-danger" th:href="@{/client/eliminar(id=${cliente.Cedula})}">Eliminar</a>
+						<a class="btn btn-outline-danger"  onclick="return confirm('¿Esta seguro de eliminar este cliente?');" th:href="@{/client/eliminar(id=${cliente.Cedula})}">Eliminar</a>
 						</td>
 					</tr>
 				</tbody>

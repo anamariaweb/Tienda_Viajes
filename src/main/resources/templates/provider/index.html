@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<head th:replace="layouts/base::head(titulo='LISTA DE PROVEEDORES')"></head>
+<body>
+
+	<header th:replace="layouts/base::header"></header>
+	<div class="container mt=4">
+
+
+		<h1>LISTA DE PROVEEDORES</h1>
+		<p>
+			<a class="btn btn-primary" href="/provider/crear">Crear</a>
+		</p>
+		<table class="table table-bordered border-primary">
+			<thead>
+				<tr>
+					<th>NIT</th>
+					<th>NOMBRE PROVEEDOR</th>
+					<th>DIRECCION</th>
+					<th>TELEFONO</th>
+					<th>CIUDAD</th>
+					<th>ACCIONES</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="proveedor:${proveedores}">
+					<td th:text="${proveedor.NIT}"></td>
+					<td th:text="${proveedor.Nombre_Proveedor}"></td>
+					<td th:text="${proveedor.Direccion}"></td>
+					<td th:text="${proveedor.Telefono}"></td>
+					<td th:text="${proveedor.Ciudad}"></td>
+					<td> 
+						<a class="btn btn-outline-success" th:href="@{/provider/editar(id=${proveedor.NIT})}">Editar</a> 
+						<a class="btn btn-outline-danger"  onclick="return confirm('¿Esta seguro de eliminar este proveedor?');" th:href="@{/provider/eliminar(id=${proveedor.NIT})}">Eliminar</a>
+					</td>
+				</tr>
+			</tbody>
+
+		</table>
+	</div>
+</body>
+</html>

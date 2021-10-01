@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layouts/base::head(titulo='CREAR CLIENTE')"></head>
+<head th:replace="layouts/base::head(titulo='CREAR PROVEEDOR')"></head>
 <body>
 	<header th:replace="layouts/base::header"></header>
 		<div class="container mt=4">
-		<h1> CREAR CLIENTE</h1>
+		<h1> CREAR PROVEEDOR</h1>
 		
-		<form action="#" th:action="@{/client/guardar}" method="POST">
+		<form action="#" th:action="@{/provider/guardar}" method="POST">
 		<div class="mb-3">
-			<label class="form-label" for="cedula">Cedula</label>
-			<input type="text" name="cedula" class="form-control" required="required">
+			<label class="form-label" for="NIT">NIT</label>
+			<input type="text" name="NIT" class="form-control" required="required">
 		</div>
 		
 		<div class="mb-3">
-			<label class="form-label" for="nombre">Nombre</label>
-			<input type="text" name="nombre" class="form-control">
+			<label class="form-label" for="Nombre_Proveedor">Nombre Proveedor</label>
+			<input type="text" name="Nombre_Proveedor" class="form-control">
 		</div>
 		
 		
@@ -29,12 +29,12 @@
 		</div>
 		
 		<div class="mb-3">
-			<label class="form-label" for="correo">Correo</label>
-			<input type="email" name="correo" class="form-control">
+			<label class="form-label" for="ciudad">Ciudad</label>
+			<input type="text" name="ciudad" class="form-control">
 		</div>
 		
 		
-		<a href="/client/listar" class="btn btn-secondary">Atras</a>
+		<a href="/provider/listar" class="btn btn-secondary">Atras</a>
 		<button type="submit" class="btn btn-primary">Enviar</button>
 		
 		</form>
