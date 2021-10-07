@@ -31,8 +31,8 @@
 					<td th:text="${proveedor.Telefono}"></td>
 					<td th:text="${proveedor.Ciudad}"></td>
 					<td> 
-						<a class="btn btn-outline-success" th:href="@{/provider/editar(id=${proveedor.NIT})}">Editar</a> 
-						<a class="btn btn-outline-danger"  onclick="return confirm('¿Esta seguro de eliminar este proveedor?');" th:href="@{/provider/eliminar(id=${proveedor.NIT})}">Eliminar</a>
+						<a class="btn btn-outline-success" th:href="@{/provider/editar/}+${proveedor.NIT}">Editar</a> 
+						<a class="btn btn-outline-danger delete-item"  th:href="@{/provider/eliminar/}+${proveedor.NIT}">Eliminar</a>
 					</td>
 				</tr>
 			</tbody>

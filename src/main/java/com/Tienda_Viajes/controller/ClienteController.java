@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -35,9 +36,9 @@ public class ClienteController {
 
 	}
 
-	@GetMapping("/eliminar")
-	public String eliminar(int id) {
-		service.delete(id);
+	@GetMapping("/eliminar/{Cedula}")
+	public String eliminar(@PathVariable int Cedula) {
+		service.delete(Cedula);
 		return "redirect:/client/listar";
 	}
 
@@ -46,9 +47,9 @@ public class ClienteController {
 		return "client/crear";
 	}
 
-	@GetMapping("/editar")
-	public String editar(int id, Model model) {
-		Optional<Cliente> c = service.listarId(id);
+	@GetMapping("/editar/{Cedula}")
+	public String editar(@PathVariable int Cedula, Model model) {
+		Optional<Cliente> c = service.listarId(Cedula);
 		model.addAttribute("cliente", c);
 		return "client/editar";
 	}

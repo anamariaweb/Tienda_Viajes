@@ -26,12 +26,11 @@
 						<td th:text="${cliente.Telefono}"></td>
 						<td th:text="${cliente.Correo}"></td>
 						<td>
-						<a class="btn btn-outline-success" th:href="@{/client/editar(id=${cliente.Cedula})}">Editar</a>
-						<a class="btn btn-outline-danger"  onclick="return confirm('¿Esta seguro de eliminar este cliente?');" th:href="@{/client/eliminar(id=${cliente.Cedula})}">Eliminar</a>
+						<a class="btn btn-outline-success" th:href="@{/client/editar/}+${cliente.Cedula}">Editar</a>
+						<a class="btn btn-outline-danger delete-item"  th:href="@{/client/eliminar/}+${cliente.Cedula}">Eliminar</a>
 						</td>
 					</tr>
 				</tbody>
-
 			</table>
 		</div>
 </body>

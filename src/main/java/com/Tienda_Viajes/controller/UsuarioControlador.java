@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.Tienda_Viajes.interfaceService.IPersonaService;
@@ -23,7 +24,6 @@ public class UsuarioControlador {
 	@GetMapping("/listar")
 	public String listar(Model model) {
 		List<Persona> personas = service.listar();
-		System.out.println(personas.size());
 		model.addAttribute("personas", personas);
 		return "user/index";
 	}
@@ -35,9 +35,9 @@ public class UsuarioControlador {
 
 	}
 
-	@GetMapping("/eliminar")
-	public String eliminar(int id) {
-		service.delete(id);
+	@GetMapping("/eliminar/{Cedula}")
+	public String eliminar(@PathVariable int Cedula) {
+		service.delete(Cedula);
 		return "redirect:/user/listar";
 	}
 
@@ -47,9 +47,9 @@ public class UsuarioControlador {
 
 	}
 
-	@GetMapping("/editar")
-	public String editar(int id, Model model) {
-		Optional<Persona> p = service.listarId(id);
+	@GetMapping("/editar/{Cedula}")
+	public String editar(@PathVariable int Cedula, Model model) {
+		Optional<Persona> p = service.listarId(Cedula);
 		model.addAttribute("persona", p);
 		return "user/editar";
 	}

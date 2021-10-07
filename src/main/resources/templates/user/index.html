@@ -31,8 +31,8 @@
 					<td th:text="${persona.Usuario}"></td>
 					<td th:text="${persona.Clave}"></td>
 					<td>
-						<a class="btn btn-outline-success" th:href="@{/user/editar(id=${persona.Cedula})}">Editar</a> 
-						<a class="btn btn-outline-danger"  onclick="return confirm('¿Esta seguro de eliminar este usuario?');" th:href="@{/user/eliminar(id=${persona.Cedula})}">Eliminar</a>
+						<a class="btn btn-outline-success" th:href="@{/user/editar/}+${persona.Cedula}">Editar</a> 
+						<a class="btn btn-outline-danger delete-item"  th:href="@{/user/eliminar(id=${persona.Cedula})}">Eliminar</a>
 					</td>
 				</tr>
 			</tbody>

@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -36,9 +37,9 @@ public class ProveedorController {
 
 	}
 
-	@GetMapping("/eliminar")
-	public String eliminar(int id) {
-		service.delete(id);
+	@GetMapping("/eliminar/{Nit}")
+	public String eliminar(@PathVariable int Nit) {
+		service.delete(Nit);
 		return "redirect:/provider/listar";
 	}
 
@@ -47,9 +48,9 @@ public class ProveedorController {
 		return "provider/crear";
 	}
 
-	@GetMapping("/editar")
-	public String editar(int id, Model model) {
-		Optional<Proveedor> pr = service.listarId(id);
+	@GetMapping("/editar/{Nit}")
+	public String editar(@PathVariable int Nit, Model model) {
+		Optional<Proveedor> pr = service.listarId(Nit);
 		model.addAttribute("proveedor", pr);
 		return "provider/editar";
 		
