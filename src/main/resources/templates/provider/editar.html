@@ -3,46 +3,53 @@
 <head th:replace="layouts/base::head(titulo='EDITAR PROVEEDOR')"></head>
 <body>
 	<header th:replace="layouts/base::header"></header>
-		<div class="container mt=4">
-		<h1>
-		EDITAR PROVEEDOR
-		</h1>
-		
-		<form action="#" th:action="@{/provider/guardar}" method="POST" th:object="${proveedor}">
-		<div class="mb-3">
-			<label class="form-label" for="NIT">NIT</label>
-			<input type="text" name="NIT" class="form-control" th:field="${proveedor.NIT}" readonly required="required">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				<h1>EDITAR PROVEEDOR</h1>
+
+				<form action="#" th:action="@{/provider/guardar}" method="POST"
+					th:object="${proveedor}">
+					<div class="mb-3">
+						<label class="form-label" for="NIT">NIT</label> <input type="text"
+							name="NIT" class="form-control" th:field="${proveedor.NIT}"
+							readonly required="required">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Nombre_Proveedor">Nombre
+							Proveedor</label> <input type="text" name="Nombre_Proveedor"
+							class="form-control" th:field="${proveedor.Nombre_Proveedor}">
+					</div>
+
+
+					<div class="mb-3">
+						<label class="form-label" for="direccion">Direccion</label> <input
+							type="text" name="direccion" class="form-control"
+							th:field="${proveedor.Direccion}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="telefono">Telefono</label> <input
+							type="text" name="telefono" class="form-control"
+							th:field="${proveedor.Telefono}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="ciudad">Ciudad</label> <input
+							type="text" name="ciudad" class="form-control"
+							th:field="${proveedor.Ciudad}">
+					</div>
+
+
+					<a href="/provider/listar" class="btn btn-secondary">Atras</a>
+					<button type="submit" class="btn btn-primary">Enviar</button>
+
+				</form>
+
+
+			</div>
 		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Nombre_Proveedor">Nombre Proveedor</label>
-			<input type="text" name="Nombre_Proveedor" class="form-control" th:field="${proveedor.Nombre_Proveedor}">
-		</div>
-		
-		
-		<div class="mb-3">
-			<label class="form-label" for="direccion">Direccion</label>
-			<input type="text" name="direccion" class="form-control" th:field="${proveedor.Direccion}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="telefono">Telefono</label>
-			<input type="text" name="telefono" class="form-control" th:field="${proveedor.Telefono}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="ciudad">Ciudad</label>
-			<input type="text" name="ciudad" class="form-control" th:field="${proveedor.Ciudad}">
-		</div>
-		
-		
-		<a href="/provider/listar" class="btn btn-secondary">Atras</a>
-		<button type="submit" class="btn btn-primary">Enviar</button>
-		
-		</form>
-		
-		
-			
-		</div>
+	</div>
 </body>
 </html>

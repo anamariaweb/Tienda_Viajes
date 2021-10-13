@@ -3,49 +3,56 @@
 <head th:replace="layouts/base::head(titulo='CREAR PRODUCTO')"></head>
 <body>
 	<header th:replace="layouts/base::header"></header>
-		<div class="container mt=4">
-		<h1> CREAR PRODUCTO</h1>
-		
-		<form action="#" th:action="@{/product/guardar}" method="POST">
-		<div class="mb-3">
-			<label class="form-label" for="Codigo">CODIGO</label>
-			<input type="text" name="Codigo" class="form-control" required="required">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				<h1>CREAR PRODUCTO</h1>
+
+				<form action="#" th:action="@{/product/guardar}" method="POST">
+					<div class="mb-3">
+						<label class="form-label" for="Codigo">CODIGO</label> <input
+							type="text" name="Codigo" class="form-control"
+							required="required">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Nombre_Producto">Nombre
+							Producto</label> <input type="text" name="Nombre_Producto"
+							class="form-control">
+					</div>
+
+
+					<div class="mb-3">
+						<label class="form-label" for="NIT_Proveedor">NIT
+							Proveedor</label> <input type="text" name="NIT_Proveedor"
+							class="form-control">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Precio_Producto">Precio
+							Producto</label> <input type="text" name="Precio_Producto"
+							class="form-control">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Precio_Ventas">Precio
+							Ventas</label> <input type="text" name="Precio_Ventas"
+							class="form-control">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="IVA">IVA</label> <input type="text"
+							name="IVA" class="form-control">
+					</div>
+
+
+					<a href="/product/listar" class="btn btn-secondary">Atras</a>
+					<button type="submit" class="btn btn-primary">Enviar</button>
+
+				</form>
+
+			</div>
 		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Nombre_Producto">Nombre Producto</label>
-			<input type="text" name="Nombre_Producto" class="form-control">
-		</div>
-		
-		
-		<div class="mb-3">
-			<label class="form-label" for="NIT_Proveedor">NIT Proveedor</label>
-			<input type="text" name="NIT_Proveedor" class="form-control">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Precio_Producto">Precio Producto</label>
-			<input type="text" name="Precio_Producto" class="form-control">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Precio_Ventas">Precio Ventas</label>
-			<input type="text" name="Precio_Ventas" class="form-control">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="IVA">IVA</label>
-			<input type="text" name="IVA" class="form-control">
-		</div>
-		
-		
-		<a href="/product/listar" class="btn btn-secondary">Atras</a>
-		<button type="submit" class="btn btn-primary">Enviar</button>
-		
-		</form>
-		
-		
-			
-		</div>
+	</div>
 </body>
 </html>

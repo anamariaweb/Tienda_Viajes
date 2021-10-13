@@ -1,0 +1,1342 @@
+[1mdiff --git a/src/main/java/com/Tienda_Viajes/controller/ClienteController.java b/src/main/java/com/Tienda_Viajes/controller/ClienteController.java[m
+[1mindex 3fcd01e..408b615 100644[m
+[1m--- a/src/main/java/com/Tienda_Viajes/controller/ClienteController.java[m
+[1m+++ b/src/main/java/com/Tienda_Viajes/controller/ClienteController.java[m
+[36m@@ -26,6 +26,7 @@[m [mpublic class ClienteController {[m
+ 	public String listar(Model model) {[m
+ 		List<Cliente> cliente = service.listar();[m
+ 		model.addAttribute("clientes", cliente);[m
+[32m+[m[41m		[m
+ 		return "client/index";[m
+ 	}[m
+ [m
+[1mdiff --git a/src/main/java/com/Tienda_Viajes/interfaceService/IPersonaService.java b/src/main/java/com/Tienda_Viajes/interfaceService/IPersonaService.java[m
+[1mindex 90652b9..62919e4 100644[m
+[1m--- a/src/main/java/com/Tienda_Viajes/interfaceService/IPersonaService.java[m
+[1m+++ b/src/main/java/com/Tienda_Viajes/interfaceService/IPersonaService.java[m
+[36m@@ -11,5 +11,6 @@[m [mpublic interface IPersonaService {[m
+ 	public Optional<Persona> listarId(int id);[m
+ 	public int save(Persona persona);[m
+ 	public void delete(int id);[m
+[32m+[m	[32mpublic List<Persona> findByUsuarioAndClave(String username, String password);[m
+ 	[m
+ }[m
+[1mdiff --git a/src/main/java/com/Tienda_Viajes/interfaces/IPersona.java b/src/main/java/com/Tienda_Viajes/interfaces/IPersona.java[m
+[1mindex ebb9a40..8635d51 100644[m
+[1m--- a/src/main/java/com/Tienda_Viajes/interfaces/IPersona.java[m
+[1m+++ b/src/main/java/com/Tienda_Viajes/interfaces/IPersona.java[m
+[36m@@ -1,5 +1,8 @@[m
+ package com.Tienda_Viajes.interfaces;[m
+ [m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+[32m+[m[32mimport org.springframework.data.jpa.repository.Query;[m
+ import org.springframework.data.repository.CrudRepository;[m
+ import org.springframework.stereotype.Repository;[m
+ [m
+[36m@@ -9,4 +12,8 @@[m [mimport com.Tienda_Viajes.model.Persona;[m
+ public interface IPersona extends CrudRepository<Persona, Integer>{[m
+ 	[m
+ 	[m
+[32m+[m	[32m@Query("select u from Persona u where u.Usuario= ?1 and u.Clave= ?2")[m
+[32m+[m	[32mList<Persona> findByUsuarioAndClave(String usuario, String clave);[m
+[32m+[m[41m	[m
+[32m+[m[41m	[m
+ }[m
+[1mdiff --git a/src/main/java/com/Tienda_Viajes/service/PersonaService.java b/src/main/java/com/Tienda_Viajes/service/PersonaService.java[m
+[1mindex e48b6e1..7510114 100644[m
+[1m--- a/src/main/java/com/Tienda_Viajes/service/PersonaService.java[m
+[1m+++ b/src/main/java/com/Tienda_Viajes/service/PersonaService.java[m
+[36m@@ -41,5 +41,10 @@[m [mpublic class PersonaService implements IPersonaService {[m
+ 		data.deleteById(id);[m
+ 		[m
+ 	}[m
+[32m+[m
+[32m+[m	[32m@Override[m
+[32m+[m	[32mpublic List<Persona> findByUsuarioAndClave(String username, String password) {[m
+[32m+[m		[32mreturn data.findByUsuarioAndClave(username, password);[m
+[32m+[m	[32m}[m
+ 	[m
+ }[m
+[1mdiff --git a/src/main/resources/application.properties b/src/main/resources/application.properties[m
+[1mindex c0b635b..be29740 100644[m
+[1m--- a/src/main/resources/application.properties[m
+[1m+++ b/src/main/resources/application.properties[m
+[36m@@ -1,4 +1,4 @@[m
+[31m-spring.datasource.url=jdbc:mariadb://localhost:3306/DB_TiendaViajes?serverTimezone=UTC[m
+[32m+[m[32mspring.datasource.url=jdbc:mariadb://localhost:3306/DB_TiendaViajes?serverTimezone=UTC&useSSL=false[m
+ spring.datasource.username=root[m
+ spring.datasource.password=root[m
+ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver[m
+[1mdiff --git a/src/main/resources/static/js/main.js b/src/main/resources/static/js/main.js[m
+[1mindex 9b73478..8ca5014 100644[m
+[1m--- a/src/main/resources/static/js/main.js[m
+[1m+++ b/src/main/resources/static/js/main.js[m
+[36m@@ -34,5 +34,43 @@[m [m$(document).ready(function() {[m
+ [m
+ 	})[m
+ [m
+[32m+[m	[32m$('#login').submit(function(e) {[m
+[32m+[m		[32me.preventDefault();[m
+[32m+[m
+[32m+[m		[32m$.ajax({[m
+[32m+[m			[32mtype: $('#login').attr('method'),[m
+[32m+[m			[32murl: $('#login').attr('action'),[m
+[32m+[m			[32mdata: $('#login').serialize(),[m
+[32m+[m			[32msuccess: function(data) {[m
+[32m+[m				[32mif (data == 1) {[m
+[32m+[m					[32mlet timerInterval[m
+[32m+[m					[32mSwal.fire({[m
+[32m+[m						[32mtext: 'Lo estamos logeando!',[m
+[32m+[m						[32mtimer: 1000,[m
+[32m+[m						[32mposition: 'top-end',[m
+[32m+[m						[32mtimerProgressBar: true,[m
+[32m+[m						[32mshowConfirmButton: false,[m
+[32m+[m						[32micon: 'success',[m
+[32m+[m					[32m}).then((result) => {[m
+[32m+[m						[32m/* Read more about handling dismissals below */[m
+[32m+[m						[32mif (result.dismiss === Swal.DismissReason.timer) {[m
+[32m+[m							[32mwindow.location.href = '/user/listar';[m
+[32m+[m						[32m}[m
+[32m+[m					[32m})[m
+[32m+[m				[32m}[m
+[32m+[m				[32melse {[m
+[32m+[m					[32mSwal.fire({[m
+[32m+[m						[32mtext: 'Credenciales invalidas!',[m
+[32m+[m						[32mtimer: 1500,[m
+[32m+[m						[32mposition: 'top-end',[m
+[32m+[m						[32mtimerProgressBar: true,[m
+[32m+[m						[32mshowConfirmButton: false,[m
+[32m+[m						[32micon: 'warning',[m
+[32m+[m					[32m})[m
+[32m+[m				[32m}[m
+[32m+[m			[32m}[m
+[32m+[m		[32m});[m
+[32m+[m
+[32m+[m	[32m})[m
+ [m
+ });[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/client/crear.html b/src/main/resources/templates/client/crear.html[m
+[1mindex 2e193f8..c3bbc0b 100644[m
+[1m--- a/src/main/resources/templates/client/crear.html[m
+[1m+++ b/src/main/resources/templates/client/crear.html[m
+[36m@@ -3,44 +3,47 @@[m
+ <head th:replace="layouts/base::head(titulo='CREAR CLIENTE')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1> CREAR CLIENTE</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/client/guardar}" method="POST">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="cedula">Cedula</label>[m
+[31m-			<input type="text" name="cedula" class="form-control" required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="nombre">Nombre</label>[m
+[31m-			<input type="text" name="nombre" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="direccion">Direccion</label>[m
+[31m-			<input type="text" name="direccion" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="telefono">Telefono</label>[m
+[31m-			<input type="text" name="telefono" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="correo">Correo</label>[m
+[31m-			<input type="email" name="correo" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/client/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>CREAR CLIENTE</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/client/guardar}" method="POST">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="cedula">Cedula</label> <input[m
+[32m+[m							[32mtype="text" name="cedula" class="form-control"[m
+[32m+[m							[32mrequired="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="nombre">Nombre</label> <input[m
+[32m+[m							[32mtype="text" name="nombre" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="direccion">Direccion</label> <input[m
+[32m+[m							[32mtype="text" name="direccion" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="telefono">Telefono</label> <input[m
+[32m+[m							[32mtype="text" name="telefono" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="correo">Correo</label> <input[m
+[32m+[m							[32mtype="email" name="correo" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/client/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/client/editar.html b/src/main/resources/templates/client/editar.html[m
+[1mindex 67681e3..09b6529 100644[m
+[1m--- a/src/main/resources/templates/client/editar.html[m
+[1m+++ b/src/main/resources/templates/client/editar.html[m
+[36m@@ -3,46 +3,53 @@[m
+ <head th:replace="layouts/base::head(titulo='EDITAR CLIENTE')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1>[m
+[31m-		EDITAR CLIENTE[m
+[31m-		</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/client/guardar}" method="POST" th:object="${cliente}">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="cedula">Cedula</label>[m
+[31m-			<input type="text" name="cedula" class="form-control" th:field="${cliente.Cedula}" readonly required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="nombre">Nombre</label>[m
+[31m-			<input type="text" name="nombre" class="form-control" th:field="${cliente.Nombre}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="direccion">Direccion</label>[m
+[31m-			<input type="text" name="direccion" class="form-control" th:field="${cliente.Direccion}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="telefono">Telefono</label>[m
+[31m-			<input type="text" name="telefono" class="form-control" th:field="${cliente.Telefono}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="correo">Correo</label>[m
+[31m-			<input type="email" name="correo" class="form-control" th:field="${cliente.Correo}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/client/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>EDITAR CLIENTE</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/client/guardar}" method="POST"[m
+[32m+[m					[32mth:object="${cliente}">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="cedula">Cedula</label> <input[m
+[32m+[m							[32mtype="text" name="cedula" class="form-control"[m
+[32m+[m							[32mth:field="${cliente.Cedula}" readonly required="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="nombre">Nombre</label> <input[m
+[32m+[m							[32mtype="text" name="nombre" class="form-control"[m
+[32m+[m							[32mth:field="${cliente.Nombre}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="direccion">Direccion</label> <input[m
+[32m+[m							[32mtype="text" name="direccion" class="form-control"[m
+[32m+[m							[32mth:field="${cliente.Direccion}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="telefono">Telefono</label> <input[m
+[32m+[m							[32mtype="text" name="telefono" class="form-control"[m
+[32m+[m							[32mth:field="${cliente.Telefono}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="correo">Correo</label> <input[m
+[32m+[m							[32mtype="email" name="correo" class="form-control"[m
+[32m+[m							[32mth:field="${cliente.Correo}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/client/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/client/index.html b/src/main/resources/templates/client/index.html[m
+[1mindex 28e411c..27d0c9f 100644[m
+[1m--- a/src/main/resources/templates/client/index.html[m
+[1m+++ b/src/main/resources/templates/client/index.html[m
+[36m@@ -2,36 +2,45 @@[m
+ <html xmlns:th="http://www.thymeleaf.org">[m
+ <head th:replace="layouts/base::head(titulo='LISTA DE CLIENTES')"></head>[m
+ <body>[m
+[31m-	[m
+[32m+[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-			<h1>LISTA DE CLIENTES</h1>[m
+[31m-			<p><a class="btn btn-primary" href="/client/crear">Crear</a></p>[m
+[31m-			<table class="table table-bordered border-primary">[m
+[31m-				<thead>[m
+[31m-					<tr>[m
+[31m-						<th>CEDULA</th>[m
+[31m-						<th>NOMBRE</th>[m
+[31m-						<th>DIRECCION</th>[m
+[31m-						<th>TELEFONO</th>[m
+[31m-						<th>CORREO</th>[m
+[31m-						<th>ACCIONES</th>[m
+[31m-					</tr>[m
+[31m-				</thead>[m
+[31m-				<tbody>[m
+[31m-					<tr th:each="cliente:${clientes}">[m
+[31m-						<td th:text="${cliente.Cedula}"></td>[m
+[31m-						<td th:text="${cliente.Nombre}"></td>[m
+[31m-						<td th:text="${cliente.Direccion}"></td>[m
+[31m-						<td th:text="${cliente.Telefono}"></td>[m
+[31m-						<td th:text="${cliente.Correo}"></td>[m
+[31m-						<td>[m
+[31m-						<a class="btn btn-outline-success" th:href="@{/client/editar/}+${cliente.Cedula}">Editar</a>[m
+[31m-						<a class="btn btn-outline-danger delete-item"  th:href="@{/client/eliminar/}+${cliente.Cedula}">Eliminar</a>[m
+[31m-						</td>[m
+[31m-					</tr>[m
+[31m-				</tbody>[m
+[31m-			</table>[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>LISTA DE CLIENTES</h1>[m
+[32m+[m				[32m<p>[m
+[32m+[m					[32m<a class="btn btn-dark" href="/client/crear">Crear</a>[m
+[32m+[m				[32m</p>[m
+[32m+[m[41m				[m
+[32m+[m				[32m<div class="table-responsive">[m
+[32m+[m					[32m<table class="table table-bordered border-white table-secondary table-hover">[m
+[32m+[m						[32m<thead class="table-dark border-white">[m
+[32m+[m							[32m<tr>[m
+[32m+[m								[32m<th>CEDULA</th>[m
+[32m+[m								[32m<th>NOMBRE</th>[m
+[32m+[m								[32m<th>DIRECCION</th>[m
+[32m+[m								[32m<th>TELEFONO</th>[m
+[32m+[m								[32m<th>CORREO</th>[m
+[32m+[m								[32m<th>ACCIONES</th>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</thead>[m
+[32m+[m						[32m<tbody>[m
+[32m+[m							[32m<tr th:each="cliente:${clientes}">[m
+[32m+[m								[32m<td th:text="${cliente.Cedula}"></td>[m
+[32m+[m								[32m<td th:text="${cliente.Nombre}"></td>[m
+[32m+[m								[32m<td th:text="${cliente.Direccion}"></td>[m
+[32m+[m								[32m<td th:text="${cliente.Telefono}"></td>[m
+[32m+[m								[32m<td th:text="${cliente.Correo}"></td>[m
+[32m+[m								[32m<td>[m
+[32m+[m									[32m<a class="btn btn-outline-success" th:href="@{/client/editar/}+${cliente.Cedula}">Editar</a>[m
+[32m+[m									[32m<a class="btn btn-outline-danger delete-item" th:href="@{/client/eliminar/}+${cliente.Cedula}">Eliminar</a>[m
+[32m+[m								[32m</td>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</tbody>[m
+[32m+[m					[32m</table>[m
+[32m+[m				[32m</div>[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/layouts/base.html b/src/main/resources/templates/layouts/base.html[m
+[1mindex ff3b5bb..b8a88c3 100644[m
+[1m--- a/src/main/resources/templates/layouts/base.html[m
+[1m+++ b/src/main/resources/templates/layouts/base.html[m
+[36m@@ -2,39 +2,72 @@[m
+ <html xmlns:th="http://www.thymeleaf.org">[m
+ <head th:fragment="head">[m
+ <meta charset="ISO-8859-1">[m
+[32m+[m[32m<meta name="viewport" content="width=device-width, initial-scale=1">[m
+[32m+[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="57x57" href="/img/apple-icon-57x57.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="60x60" href="/img/apple-icon-60x60.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="72x72" href="/img/apple-icon-72x72.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="76x76" href="/img/apple-icon-76x76.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="114x114" href="/img/apple-icon-114x114.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="120x120" href="/img/apple-icon-120x120.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="144x144" href="/img/apple-icon-144x144.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="152x152" href="/img/apple-icon-152x152.png">[m
+[32m+[m[32m<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-icon-180x180.png">[m
+[32m+[m[32m<link rel="icon" type="image/png" sizes="192x192"  href="/img/android-icon-192x192.png">[m
+[32m+[m[32m<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png">[m
+[32m+[m[32m<link rel="icon" type="image/png" sizes="96x96" href="/img/favicon-96x96.png">[m
+[32m+[m[32m<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">[m
+[32m+[m[32m<link rel="manifest" href="/manifest.json">[m
+[32m+[m[32m<meta name="msapplication-TileColor" content="#ffffff">[m
+[32m+[m[32m<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">[m
+[32m+[m[32m<meta name="theme-color" content="#ffffff">[m
+[32m+[m
+ <title th:text="${titulo}"></title>[m
+ <!-- CSS only -->[m
+[31m-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">[m
+[32m+[m[32m<link[m
+[32m+[m	[32mhref="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"[m
+[32m+[m	[32mrel="stylesheet">[m
+[32m+[m[32m<link href="/css/main.css" rel="stylesheet">[m
+[32m+[m[32m<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.0/font/bootstrap-icons.css">[m
+[32m+[m[32m<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>[m
+[32m+[m[32m<script src="https://code.jquery.com/jquery-3.6.0.min.js"[m
+[32m+[m	[32mintegrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="[m
+[32m+[m	[32mcrossorigin="anonymous"></script>[m
+ <script[m
+[31m-  src="https://code.jquery.com/jquery-3.6.0.min.js"[m
+[31m-  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="[m
+[31m-  crossorigin="anonymous"></script>[m
+[31m-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>[m
+[31m-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js" integrity="sha256-2UHqQuWxFUpPFIsooOziz5fIn6wCyDgf3c9SthP8ZYk=" crossorigin="anonymous"></script>[m
+[32m+[m	[32msrc="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"[m
+[32m+[m	[32mintegrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/"[m
+[32m+[m	[32mcrossorigin="anonymous"></script>[m
+[32m+[m[32m<script[m
+[32m+[m	[32msrc="https://cdn.jsdelivr.net/npm/sweetalert2@11.1.7/dist/sweetalert2.all.min.js"[m
+[32m+[m	[32mintegrity="sha256-2UHqQuWxFUpPFIsooOziz5fIn6wCyDgf3c9SthP8ZYk="[m
+[32m+[m	[32mcrossorigin="anonymous"></script>[m
+ <script src="/js/main.js"></script>[m
+ </head>[m
+ <body>[m
+[31m- <header th:fragment="header">[m
+[31m-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">[m
+[31m-		<div class="container-fluid">[m
+[31m-			<a class="navbar-brand" href="#">TiendaViajes</a>[m
+[31m-			<button class="navbar-toggler" type="button"[m
+[31m-				data-bs-toggle="collapse" data-bs-target="#navbarNav">[m
+[31m-				<span class="navbar-toggler-icon"></span>[m
+[31m-			</button>[m
+[31m-			<div class="collapse navbar-collapse" id="navbarNavAltMarkup">[m
+[31m-				<div class="navbar-nav">[m
+[31m-					<a class="nav-link" aria-current="page" href="/user/listar">Usuarios</a> [m
+[31m-					<a class="nav-link" href="/client/listar">Clientes</a> [m
+[31m-					<a class="nav-link" href="/provider/listar">Proveedores</a> [m
+[31m-					<a class="nav-link" href="/product/listar">Productos</a> [m
+[31m-					<a class="nav-link" href="/ventas/listar">Ventas</a> [m
+[31m-					[m
+[32m+[m	[32m<header th:fragment="header">[m
+[32m+[m		[32m<nav class="navbar navbar-expand-lg navbar-dark bg-dark">[m
+[32m+[m			[32m<div class="container-fluid">[m
+[32m+[m				[32m<a class="home h2" th:href="@{/user/listar}">[m
+[32m+[m					[32m<img src="/img/viajes.png" alt="" width="85" height="65"><i class="fas fa-plane-departure"></i>[m
+[32m+[m					[32mTiendaViajes[m
+[32m+[m				[32m</a>[m
+[32m+[m				[32m<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">[m
+[32m+[m			[32m      <span class="navbar-toggler-icon"></span>[m
+[32m+[m			[32m    </button>[m
+[32m+[m				[32m<div class="collapse navbar-collapse ms-4" id="navbarNav">[m
+[32m+[m					[32m<div class="navbar-nav">[m
+[32m+[m						[32m<a class="nav-link h4" aria-current="page" href="/user/listar"><i class="bi bi-person-circle" style="margin-right: 7px;"></i>Usuarios</a>[m
+[32m+[m						[32m<a class="nav-link h4" href="/client/listar"><i class="bi bi-person-bounding-box" style="margin-right: 7px;"></i>Clientes</a>[m[41m [m
+[32m+[m						[32m<a class="nav-link h4" href="/provider/listar"><i class="fas fa-people-carry" style="margin-right: 7px;"></i>Proveedores</a>[m[41m [m
+[32m+[m						[32m<a class="nav-link h4" href="/product/listar"> <i class="fas fa-umbrella-beach" style="margin-right: 7px;"></i>Productos</a>[m[41m [m
+[32m+[m						[32m<a class="nav-link h4" href="/ventas/listar"> <i class="fas fa-hand-holding-usd" style="margin-right: 7px;"></i>Ventas</a>[m
+[32m+[m						[32m<a class="nav-link h4" href="/reportes"> <i class="fas fa-chart-line" style="margin-right: 7px;"></i>Reportes</a>[m
+[32m+[m
+[32m+[m					[32m</div>[m
+ 				</div>[m
+ 			</div>[m
+[31m-		</div>[m
+[31m-	</nav>[m
+[31m-    </header>[m
+[32m+[m		[32m</nav>[m
+[32m+[m	[32m</header>[m
+ [m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/product/crear.html b/src/main/resources/templates/product/crear.html[m
+[1mindex 31aed9a..f50e8fa 100644[m
+[1m--- a/src/main/resources/templates/product/crear.html[m
+[1m+++ b/src/main/resources/templates/product/crear.html[m
+[36m@@ -3,49 +3,56 @@[m
+ <head th:replace="layouts/base::head(titulo='CREAR PRODUCTO')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1> CREAR PRODUCTO</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/product/guardar}" method="POST">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Codigo">CODIGO</label>[m
+[31m-			<input type="text" name="Codigo" class="form-control" required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Nombre_Producto">Nombre Producto</label>[m
+[31m-			<input type="text" name="Nombre_Producto" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="NIT_Proveedor">NIT Proveedor</label>[m
+[31m-			<input type="text" name="NIT_Proveedor" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Precio_Producto">Precio Producto</label>[m
+[31m-			<input type="text" name="Precio_Producto" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Precio_Ventas">Precio Ventas</label>[m
+[31m-			<input type="text" name="Precio_Ventas" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="IVA">IVA</label>[m
+[31m-			<input type="text" name="IVA" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/product/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>CREAR PRODUCTO</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/product/guardar}" method="POST">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Codigo">CODIGO</label> <input[m
+[32m+[m							[32mtype="text" name="Codigo" class="form-control"[m
+[32m+[m							[32mrequired="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Nombre_Producto">Nombre[m
+[32m+[m							[32mProducto</label> <input type="text" name="Nombre_Producto"[m
+[32m+[m							[32mclass="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="NIT_Proveedor">NIT[m
+[32m+[m							[32mProveedor</label> <input type="text" name="NIT_Proveedor"[m
+[32m+[m							[32mclass="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Precio_Producto">Precio[m
+[32m+[m							[32mProducto</label> <input type="text" name="Precio_Producto"[m
+[32m+[m							[32mclass="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Precio_Ventas">Precio[m
+[32m+[m							[32mVentas</label> <input type="text" name="Precio_Ventas"[m
+[32m+[m							[32mclass="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="IVA">IVA</label> <input type="text"[m
+[32m+[m							[32mname="IVA" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/product/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/product/editar.html b/src/main/resources/templates/product/editar.html[m
+[1mindex 4d4e293..77ac4c9 100644[m
+[1m--- a/src/main/resources/templates/product/editar.html[m
+[1m+++ b/src/main/resources/templates/product/editar.html[m
+[36m@@ -3,51 +3,57 @@[m
+ <head th:replace="layouts/base::head(titulo='EDITAR PRODUCTO')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1>[m
+[31m-		EDITAR PRODUCTO[m
+[31m-		</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/product/guardar}" method="POST" th:object="${product}">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Codigo">CODIGO</label>[m
+[31m-			<input type="text" name="Codigo" class="form-control" th:field="${producto.Codigo}" readonly required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Nombre_Producto">Nombre Producto</label>[m
+[31m-			<input type="text" name="Nombre_Producto" class="form-control" th:field="${producto.Nombre_Producto}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="NIT_Proveedor">NIT Proveedor</label>[m
+[31m-			<input type="text" name="NIT_proveedor" class="form-control" th:field="${producto.NIT_Proveedor}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Precio_Producto">Precio Producto</label>[m
+[31m-			<input type="text" name="Precio_Producto" class="form-control" th:field="${producto.Precio_Producto}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Precio_Ventas">Precio Ventas</label>[m
+[31m-			<input type="text" name="Precio_Ventas" class="form-control" th:field="${producto.Precio_Ventas}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="IVA">IVA</label>[m
+[31m-			<input type="text" name="IVA" class="form-control" th:field="${producto.IVA}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/product/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>EDITAR PRODUCTO</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/product/guardar}" method="POST"[m
+[32m+[m					[32mth:object="${product}">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Codigo">CODIGO</label> <input[m
+[32m+[m							[32mtype="text" name="Codigo" class="form-control"[m
+[32m+[m							[32mth:field="${producto.Codigo}" readonly required="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Nombre_Producto">Nombre[m
+[32m+[m							[32mProducto</label> <input type="text" name="Nombre_Producto"[m
+[32m+[m							[32mclass="form-control" th:field="${producto.Nombre_Producto}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="NIT_Proveedor">NIT[m
+[32m+[m							[32mProveedor</label> <input type="text" name="NIT_proveedor"[m
+[32m+[m							[32mclass="form-control" th:field="${producto.NIT_Proveedor}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Precio_Producto">Precio[m
+[32m+[m							[32mProducto</label> <input type="text" name="Precio_Producto"[m
+[32m+[m							[32mclass="form-control" th:field="${producto.Precio_Producto}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Precio_Ventas">Precio[m
+[32m+[m							[32mVentas</label> <input type="text" name="Precio_Ventas"[m
+[32m+[m							[32mclass="form-control" th:field="${producto.Precio_Ventas}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="IVA">IVA</label> <input type="text"[m
+[32m+[m							[32mname="IVA" class="form-control" th:field="${producto.IVA}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/product/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/product/index.html b/src/main/resources/templates/product/index.html[m
+[1mindex 0714601..eceace4 100644[m
+[1m--- a/src/main/resources/templates/product/index.html[m
+[1m+++ b/src/main/resources/templates/product/index.html[m
+[36m@@ -5,41 +5,47 @@[m
+ <body>[m
+ [m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-	<div class="container mt=4">[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m[41m				[m
+ [m
+[31m-[m
+[31m-		<h1>LISTA DE PRODUCTOS</h1>[m
+[31m-		<p>[m
+[31m-			<a class="btn btn-primary" href="/product/crear">Crear</a>[m
+[31m-		</p>[m
+[31m-		<table class="table table-bordered border-primary">[m
+[31m-			<thead>[m
+[31m-				<tr>[m
+[31m-					<th>CODIGO</th>[m
+[31m-					<th>NOMBRE PRODUCTO</th>[m
+[31m-					<th>NIT PROVEEDOR</th>[m
+[31m-					<th>PRECIO PRODUCTO</th>[m
+[31m-					<th>PRECIO VENTAS</th>[m
+[31m-					<th>IVA</th>[m
+[31m-					<th>ACCIONES</th>[m
+[31m-				</tr>[m
+[31m-			</thead>[m
+[31m-			<tbody>[m
+[31m-				<tr th:each="producto:${productos}">[m
+[31m-					<td th:text="${producto.Codigo}"></td>[m
+[31m-					<td th:text="${producto.Nombre_Producto}"></td>[m
+[31m-					<td th:text="${producto.NIT_Proveedor}"></td>[m
+[31m-					<td th:text="${producto.Precio_Producto}"></td>[m
+[31m-					<td th:text="${producto.Precio_Ventas}"></td>[m
+[31m-					<td th:text="${producto.IVA}"></td>[m
+[31m-					<td> [m
+[31m-						<a class="btn btn-outline-success" th:href="@{/product/editar/}+${producto.Codigo}">Editar</a> [m
+[31m-						<a class="btn btn-outline-danger delete-item"  th:href="@{/product/eliminar/}+${producto.Codigo}">Eliminar</a>[m
+[31m-					</td>[m
+[31m-				</tr>[m
+[31m-			</tbody>[m
+[31m-[m
+[31m-		</table>[m
+[32m+[m				[32m<h1>LISTA DE PRODUCTOS</h1>[m
+[32m+[m				[32m<p>[m
+[32m+[m					[32m<a class="btn btn-dark" href="/product/crear">Crear</a>[m
+[32m+[m				[32m</p>[m
+[32m+[m				[32m<div class="table-responsive">[m
+[32m+[m					[32m<table class="table table-bordered border-white table-secondary table-hover">[m
+[32m+[m						[32m<thead class="table-dark border-white">[m
+[32m+[m							[32m<tr>[m
+[32m+[m								[32m<th>CODIGO</th>[m
+[32m+[m								[32m<th>NOMBRE PRODUCTO</th>[m
+[32m+[m								[32m<th>NIT PROVEEDOR</th>[m
+[32m+[m								[32m<th>PRECIO PRODUCTO</th>[m
+[32m+[m								[32m<th>PRECIO VENTAS</th>[m
+[32m+[m								[32m<th>IVA</th>[m
+[32m+[m								[32m<th>ACCIONES</th>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</thead>[m
+[32m+[m						[32m<tbody>[m
+[32m+[m							[32m<tr th:each="producto:${productos}">[m
+[32m+[m								[32m<td th:text="${producto.Codigo}"></td>[m
+[32m+[m								[32m<td th:text="${producto.Nombre_Producto}"></td>[m
+[32m+[m								[32m<td th:text="${producto.NIT_Proveedor}"></td>[m
+[32m+[m								[32m<td th:text="${producto.Precio_Producto}"></td>[m
+[32m+[m								[32m<td th:text="${producto.Precio_Ventas}"></td>[m
+[32m+[m								[32m<td th:text="${producto.IVA}"></td>[m
+[32m+[m								[32m<td>[m
+[32m+[m									[32m<a class="btn btn-outline-success" th:href="@{/product/editar/}+${producto.Codigo}">Editar</a>[m
+[32m+[m									[32m<a class="btn btn-outline-danger delete-item" th:href="@{/product/eliminar/}+${producto.Codigo}">Eliminar</a>[m
+[32m+[m								[32m</td>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</tbody>[m
+[32m+[m[41m	[m
+[32m+[m					[32m</table>[m
+[32m+[m				[32m</div>[m
+[32m+[m			[32m</div>[m
+[32m+[m		[32m</div>[m
+ 	</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/provider/crear.html b/src/main/resources/templates/provider/crear.html[m
+[1mindex a492b8a..5c99db7 100644[m
+[1m--- a/src/main/resources/templates/provider/crear.html[m
+[1m+++ b/src/main/resources/templates/provider/crear.html[m
+[36m@@ -3,44 +3,47 @@[m
+ <head th:replace="layouts/base::head(titulo='CREAR PROVEEDOR')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1> CREAR PROVEEDOR</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/provider/guardar}" method="POST">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="NIT">NIT</label>[m
+[31m-			<input type="text" name="NIT" class="form-control" required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Nombre_Proveedor">Nombre Proveedor</label>[m
+[31m-			<input type="text" name="Nombre_Proveedor" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="direccion">Direccion</label>[m
+[31m-			<input type="text" name="direccion" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="telefono">Telefono</label>[m
+[31m-			<input type="text" name="telefono" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="ciudad">Ciudad</label>[m
+[31m-			<input type="text" name="ciudad" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/provider/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>CREAR PROVEEDOR</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/provider/guardar}" method="POST">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="NIT">NIT</label> <input type="text"[m
+[32m+[m							[32mname="NIT" class="form-control" required="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Nombre_Proveedor">Nombre[m
+[32m+[m							[32mProveedor</label> <input type="text" name="Nombre_Proveedor"[m
+[32m+[m							[32mclass="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="direccion">Direccion</label> <input[m
+[32m+[m							[32mtype="text" name="direccion" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="telefono">Telefono</label> <input[m
+[32m+[m							[32mtype="text" name="telefono" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="ciudad">Ciudad</label> <input[m
+[32m+[m							[32mtype="text" name="ciudad" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/provider/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/provider/editar.html b/src/main/resources/templates/provider/editar.html[m
+[1mindex 5e6982b..3af22ed 100644[m
+[1m--- a/src/main/resources/templates/provider/editar.html[m
+[1m+++ b/src/main/resources/templates/provider/editar.html[m
+[36m@@ -3,46 +3,53 @@[m
+ <head th:replace="layouts/base::head(titulo='EDITAR PROVEEDOR')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1>[m
+[31m-		EDITAR PROVEEDOR[m
+[31m-		</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/provider/guardar}" method="POST" th:object="${proveedor}">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="NIT">NIT</label>[m
+[31m-			<input type="text" name="NIT" class="form-control" th:field="${proveedor.NIT}" readonly required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="Nombre_Proveedor">Nombre Proveedor</label>[m
+[31m-			<input type="text" name="Nombre_Proveedor" class="form-control" th:field="${proveedor.Nombre_Proveedor}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="direccion">Direccion</label>[m
+[31m-			<input type="text" name="direccion" class="form-control" th:field="${proveedor.Direccion}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="telefono">Telefono</label>[m
+[31m-			<input type="text" name="telefono" class="form-control" th:field="${proveedor.Telefono}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="ciudad">Ciudad</label>[m
+[31m-			<input type="text" name="ciudad" class="form-control" th:field="${proveedor.Ciudad}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/provider/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>EDITAR PROVEEDOR</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/provider/guardar}" method="POST"[m
+[32m+[m					[32mth:object="${proveedor}">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="NIT">NIT</label> <input type="text"[m
+[32m+[m							[32mname="NIT" class="form-control" th:field="${proveedor.NIT}"[m
+[32m+[m							[32mreadonly required="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="Nombre_Proveedor">Nombre[m
+[32m+[m							[32mProveedor</label> <input type="text" name="Nombre_Proveedor"[m
+[32m+[m							[32mclass="form-control" th:field="${proveedor.Nombre_Proveedor}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="direccion">Direccion</label> <input[m
+[32m+[m							[32mtype="text" name="direccion" class="form-control"[m
+[32m+[m							[32mth:field="${proveedor.Direccion}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="telefono">Telefono</label> <input[m
+[32m+[m							[32mtype="text" name="telefono" class="form-control"[m
+[32m+[m							[32mth:field="${proveedor.Telefono}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="ciudad">Ciudad</label> <input[m
+[32m+[m							[32mtype="text" name="ciudad" class="form-control"[m
+[32m+[m							[32mth:field="${proveedor.Ciudad}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/provider/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/provider/index.html b/src/main/resources/templates/provider/index.html[m
+[1mindex 11fc4ec..0d1b22f 100644[m
+[1m--- a/src/main/resources/templates/provider/index.html[m
+[1m+++ b/src/main/resources/templates/provider/index.html[m
+[36m@@ -5,39 +5,45 @@[m
+ <body>[m
+ [m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-	<div class="container mt=4">[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+ [m
+ [m
+[31m-		<h1>LISTA DE PROVEEDORES</h1>[m
+[31m-		<p>[m
+[31m-			<a class="btn btn-primary" href="/provider/crear">Crear</a>[m
+[31m-		</p>[m
+[31m-		<table class="table table-bordered border-primary">[m
+[31m-			<thead>[m
+[31m-				<tr>[m
+[31m-					<th>NIT</th>[m
+[31m-					<th>NOMBRE PROVEEDOR</th>[m
+[31m-					<th>DIRECCION</th>[m
+[31m-					<th>TELEFONO</th>[m
+[31m-					<th>CIUDAD</th>[m
+[31m-					<th>ACCIONES</th>[m
+[31m-				</tr>[m
+[31m-			</thead>[m
+[31m-			<tbody>[m
+[31m-				<tr th:each="proveedor:${proveedores}">[m
+[31m-					<td th:text="${proveedor.NIT}"></td>[m
+[31m-					<td th:text="${proveedor.Nombre_Proveedor}"></td>[m
+[31m-					<td th:text="${proveedor.Direccion}"></td>[m
+[31m-					<td th:text="${proveedor.Telefono}"></td>[m
+[31m-					<td th:text="${proveedor.Ciudad}"></td>[m
+[31m-					<td> [m
+[31m-						<a class="btn btn-outline-success" th:href="@{/provider/editar/}+${proveedor.NIT}">Editar</a> [m
+[31m-						<a class="btn btn-outline-danger delete-item"  th:href="@{/provider/eliminar/}+${proveedor.NIT}">Eliminar</a>[m
+[31m-					</td>[m
+[31m-				</tr>[m
+[31m-			</tbody>[m
+[31m-[m
+[31m-		</table>[m
+[32m+[m				[32m<h1>LISTA DE PROVEEDORES</h1>[m
+[32m+[m				[32m<p>[m
+[32m+[m					[32m<a class="btn btn-dark" href="/provider/crear">Crear</a>[m
+[32m+[m				[32m</p>[m
+[32m+[m				[32m<div class="table-responsive">[m
+[32m+[m					[32m<table class="table table-bordered border-white table-secondary table-hover">[m
+[32m+[m						[32m<thead class="table-dark border-white">[m
+[32m+[m							[32m<tr>[m
+[32m+[m								[32m<th>NIT</th>[m
+[32m+[m								[32m<th>NOMBRE PROVEEDOR</th>[m
+[32m+[m								[32m<th>DIRECCION</th>[m
+[32m+[m								[32m<th>TELEFONO</th>[m
+[32m+[m								[32m<th>CIUDAD</th>[m
+[32m+[m								[32m<th>ACCIONES</th>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</thead>[m
+[32m+[m						[32m<tbody>[m
+[32m+[m							[32m<tr th:each="proveedor:${proveedores}">[m
+[32m+[m								[32m<td th:text="${proveedor.NIT}"></td>[m
+[32m+[m								[32m<td th:text="${proveedor.Nombre_Proveedor}"></td>[m
+[32m+[m								[32m<td th:text="${proveedor.Direccion}"></td>[m
+[32m+[m								[32m<td th:text="${proveedor.Telefono}"></td>[m
+[32m+[m								[32m<td th:text="${proveedor.Ciudad}"></td>[m
+[32m+[m								[32m<td>[m
+[32m+[m									[32m<a class="btn btn-outline-success" th:href="@{/provider/editar/}+${proveedor.NIT}">Editar</a>[m
+[32m+[m									[32m<a class="btn btn-outline-danger delete-item" th:href="@{/provider/eliminar/}+${proveedor.NIT}">Eliminar</a>[m
+[32m+[m								[32m</td>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</tbody>[m
+[32m+[m[41m	[m
+[32m+[m					[32m</table>[m
+[32m+[m				[32m</div>[m
+[32m+[m			[32m</div>[m
+[32m+[m		[32m</div>[m
+ 	</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/user/crear.html b/src/main/resources/templates/user/crear.html[m
+[1mindex 2e14124..bc2bd1d 100644[m
+[1m--- a/src/main/resources/templates/user/crear.html[m
+[1m+++ b/src/main/resources/templates/user/crear.html[m
+[36m@@ -3,44 +3,49 @@[m
+ <head th:replace="layouts/base::head(titulo='CREAR USUARIO')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1>CREAR USUARIO</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/user/guardar}" method="POST">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="cedula">Cedula</label>[m
+[31m-			<input type="text" name="cedula" class="form-control" required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="nombre">Nombre</label>[m
+[31m-			<input type="text" name="nombre" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="correo">Correo</label>[m
+[31m-			<input type="email" name="correo" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="usuario">Usuario</label>[m
+[31m-			<input type="text" name="usuario" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="clave">Clave</label>[m
+[31m-			<input type="password" name="clave" class="form-control">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/user/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>CREAR USUARIO</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/user/guardar}" method="POST">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="cedula">Cedula</label> <input[m
+[32m+[m							[32mtype="text" name="cedula" class="form-control"[m
+[32m+[m							[32mrequired="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="nombre">Nombre</label> <input[m
+[32m+[m							[32mtype="text" name="nombre" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="correo">Correo</label> <input[m
+[32m+[m							[32mtype="email" name="correo" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="usuario">Usuario</label> <input[m
+[32m+[m							[32mtype="text" name="usuario" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="clave">Clave</label> <input[m
+[32m+[m							[32mtype="password" name="clave" class="form-control">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/user/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/user/editar.html b/src/main/resources/templates/user/editar.html[m
+[1mindex b7014f1..158b291 100644[m
+[1m--- a/src/main/resources/templates/user/editar.html[m
+[1m+++ b/src/main/resources/templates/user/editar.html[m
+[36m@@ -3,47 +3,55 @@[m
+ <head th:replace="layouts/base::head(titulo='EDITAR USUARIO')"></head>[m
+ <body>[m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-		<div class="container mt=4">[m
+[31m-		<h1>[m
+[31m-		EDITAR USUARIO[m
+[31m-		</h1>[m
+[31m-		[m
+[31m-		<form action="#" th:action="@{/user/guardar}" method="POST" th:object="${persona}">[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="cedula">Cedula</label>[m
+[31m-			<input type="text" name="cedula" class="form-control" th:field="${persona.Cedula}" readonly required="required">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="nombre">Nombre</label>[m
+[31m-			<input type="text" name="nombre" class="form-control" th:field="${persona.Nombre}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="correo">Correo</label>[m
+[31m-			<input type="email" name="correo" class="form-control" th:field="${persona.Correo}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="usuario">Usuario</label>[m
+[31m-			<input type="text" name="usuario" class="form-control" th:field="${persona.Usuario}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		<div class="mb-3">[m
+[31m-			<label class="form-label" for="clave">Clave</label>[m
+[31m-			<input type="password" name="clave" class="form-control" th:field="${persona.Clave}">[m
+[31m-		</div>[m
+[31m-		[m
+[31m-		[m
+[31m-		<a href="/user/listar" class="btn btn-secondary">Atras</a>[m
+[31m-		<button type="submit" class="btn btn-primary">Enviar</button>[m
+[31m-		[m
+[31m-		[m
+[31m-		</form>[m
+[31m-		[m
+[31m-		[m
+[31m-			[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>EDITAR USUARIO</h1>[m
+[32m+[m
+[32m+[m				[32m<form action="#" th:action="@{/user/guardar}" method="POST"[m
+[32m+[m					[32mth:object="${persona}">[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="cedula">Cedula</label> <input[m
+[32m+[m							[32mtype="text" name="cedula" class="form-control"[m
+[32m+[m							[32mth:field="${persona.Cedula}" readonly required="required">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="nombre">Nombre</label> <input[m
+[32m+[m							[32mtype="text" name="nombre" class="form-control"[m
+[32m+[m							[32mth:field="${persona.Nombre}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="correo">Correo</label> <input[m
+[32m+[m							[32mtype="email" name="correo" class="form-control"[m
+[32m+[m							[32mth:field="${persona.Correo}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="usuario">Usuario</label> <input[m
+[32m+[m							[32mtype="text" name="usuario" class="form-control"[m
+[32m+[m							[32mth:field="${persona.Usuario}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m					[32m<div class="mb-3">[m
+[32m+[m						[32m<label class="form-label" for="clave">Clave</label> <input[m
+[32m+[m							[32mtype="password" name="clave" class="form-control"[m
+[32m+[m							[32mth:field="${persona.Clave}">[m
+[32m+[m					[32m</div>[m
+[32m+[m
+[32m+[m
+[32m+[m					[32m<a href="/user/listar" class="btn btn-secondary">Atras</a>[m
+[32m+[m					[32m<button type="submit" class="btn btn-primary">Enviar</button>[m
+[32m+[m
+[32m+[m
+[32m+[m				[32m</form>[m
+[32m+[m
+[32m+[m
+[32m+[m
+[32m+[m			[32m</div>[m
+ 		</div>[m
+[32m+[m	[32m</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m
+[1mdiff --git a/src/main/resources/templates/user/index.html b/src/main/resources/templates/user/index.html[m
+[1mindex 51b8744..728abdf 100644[m
+[1m--- a/src/main/resources/templates/user/index.html[m
+[1m+++ b/src/main/resources/templates/user/index.html[m
+[36m@@ -5,39 +5,46 @@[m
+ <body>[m
+ [m
+ 	<header th:replace="layouts/base::header"></header>[m
+[31m-	<div class="container mt=4">[m
+[32m+[m	[32m<div class="container-fluid py-5 vh-100 gradient-custom">[m
+[32m+[m		[32m<div class="row d-flex justify-content-center align-items-center">[m
+[32m+[m			[32m<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">[m
+[32m+[m				[32m<h1>LISTA DE USUARIOS</h1>[m
+ [m
+[32m+[m				[32m<p>[m
+[32m+[m					[32m<a class="btn btn-dark" href="/user/crear">Crear</a>[m
+ [m
+[31m-		<h1>LISTA DE USUARIOS</h1>[m
+[31m-		<p>[m
+[31m-			<a class="btn btn-primary" href="/user/crear">Crear</a>[m
+[31m-		</p>[m
+[31m-		<table class="table table-bordered border-primary">[m
+[31m-			<thead>[m
+[31m-				<tr>[m
+[31m-					<th>CEDULA</th>[m
+[31m-					<th>NOMBRE</th>[m
+[31m-					<th>CORREO</th>[m
+[31m-					<th>USUARIO</th>[m
+[31m-					<th>PASSWORD</th>[m
+[31m-					<th>ACCIONES</th>[m
+[31m-				</tr>[m
+[31m-			</thead>[m
+[31m-			<tbody>[m
+[31m-				<tr th:each="persona:${personas}">[m
+[31m-					<td th:text="${persona.Cedula}"></td>[m
+[31m-					<td th:text="${persona.Nombre}"></td>[m
+[31m-					<td th:text="${persona.Correo}"></td>[m
+[31m-					<td th:text="${persona.Usuario}"></td>[m
+[31m-					<td th:text="${persona.Clave}"></td>[m
+[31m-					<td>[m
+[31m-						<a class="btn btn-outline-success" th:href="@{/user/editar/}+${persona.Cedula}">Editar</a> [m
+[31m-						<a class="btn btn-outline-danger delete-item"  th:href="@{/user/eliminar(id=${persona.Cedula})}">Eliminar</a>[m
+[31m-					</td>[m
+[31m-				</tr>[m
+[31m-			</tbody>[m
+[31m-[m
+[31m-		</table>[m
+[32m+[m				[32m</p>[m
+[32m+[m[41m				[m
+[32m+[m				[32m<div class="table-responsive">[m
+[32m+[m					[32m<table class="table table-bordered border-white table-secondary table-hover">[m
+[32m+[m						[32m<thead class="table-dark border-white">[m
+[32m+[m							[32m<tr>[m
+[32m+[m								[32m<th>CEDULA</th>[m
+[32m+[m								[32m<th>NOMBRE</th>[m
+[32m+[m								[32m<th>CORREO</th>[m
+[32m+[m								[32m<th>USUARIO</th>[m
+[32m+[m								[32m<th>PASSWORD</th>[m
+[32m+[m								[32m<th>ACCIONES</th>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</thead>[m
+[32m+[m						[32m<tbody>[m
+[32m+[m							[32m<tr th:each="persona:${personas}">[m
+[32m+[m								[32m<td th:text="${persona.Cedula}"></td>[m
+[32m+[m								[32m<td th:text="${persona.Nombre}"></td>[m
+[32m+[m								[32m<td th:text="${persona.Correo}"></td>[m
+[32m+[m								[32m<td th:text="${persona.Usuario}"></td>[m
+[32m+[m								[32m<td th:text="${persona.Clave}"></td>[m
+[32m+[m								[32m<td>[m
+[32m+[m									[32m<a class="btn btn-outline-success" th:href="@{/user/editar/}+${persona.Cedula}">Editar</a>[m
+[32m+[m									[32m<a class="btn btn-outline-danger delete-item" th:href="@{/user/eliminar/}+${persona.Cedula}">Eliminar</a>[m
+[32m+[m								[32m</td>[m
+[32m+[m							[32m</tr>[m
+[32m+[m						[32m</tbody>[m
+[32m+[m[41m	[m
+[32m+[m					[32m</table>[m
+[32m+[m				[32m</div>[m
+[32m+[m			[32m</div>[m
+[32m+[m		[32m</div>[m
+ 	</div>[m
+ </body>[m
+ </html>[m
+\ No newline at end of file[m

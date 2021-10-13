@@ -34,5 +34,43 @@ $(document).ready(function() {
 
 	})
 
+	$('#login').submit(function(e) {
+		e.preventDefault();
+
+		$.ajax({
+			type: $('#login').attr('method'),
+			url: $('#login').attr('action'),
+			data: $('#login').serialize(),
+			success: function(data) {
+				if (data == 1) {
+					let timerInterval
+					Swal.fire({
+						text: 'Lo estamos logeando!',
+						timer: 1000,
+						position: 'top-end',
+						timerProgressBar: true,
+						showConfirmButton: false,
+						icon: 'success',
+					}).then((result) => {
+						/* Read more about handling dismissals below */
+						if (result.dismiss === Swal.DismissReason.timer) {
+							window.location.href = '/user/listar';
+						}
+					})
+				}
+				else {
+					Swal.fire({
+						text: 'Credenciales invalidas!',
+						timer: 1500,
+						position: 'top-end',
+						timerProgressBar: true,
+						showConfirmButton: false,
+						icon: 'warning',
+					})
+				}
+			}
+		});
+
+	})
 
 });

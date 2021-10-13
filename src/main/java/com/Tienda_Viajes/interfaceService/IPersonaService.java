@@ -11,5 +11,6 @@ public interface IPersonaService {
 	public Optional<Persona> listarId(int id);
 	public int save(Persona persona);
 	public void delete(int id);
+	public List<Persona> findByUsuarioAndClave(String username, String password);
 	
 }

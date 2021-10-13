@@ -3,47 +3,55 @@
 <head th:replace="layouts/base::head(titulo='EDITAR USUARIO')"></head>
 <body>
 	<header th:replace="layouts/base::header"></header>
-		<div class="container mt=4">
-		<h1>
-		EDITAR USUARIO
-		</h1>
-		
-		<form action="#" th:action="@{/user/guardar}" method="POST" th:object="${persona}">
-		<div class="mb-3">
-			<label class="form-label" for="cedula">Cedula</label>
-			<input type="text" name="cedula" class="form-control" th:field="${persona.Cedula}" readonly required="required">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				<h1>EDITAR USUARIO</h1>
+
+				<form action="#" th:action="@{/user/guardar}" method="POST"
+					th:object="${persona}">
+					<div class="mb-3">
+						<label class="form-label" for="cedula">Cedula</label> <input
+							type="text" name="cedula" class="form-control"
+							th:field="${persona.Cedula}" readonly required="required">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="nombre">Nombre</label> <input
+							type="text" name="nombre" class="form-control"
+							th:field="${persona.Nombre}">
+					</div>
+
+
+					<div class="mb-3">
+						<label class="form-label" for="correo">Correo</label> <input
+							type="email" name="correo" class="form-control"
+							th:field="${persona.Correo}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="usuario">Usuario</label> <input
+							type="text" name="usuario" class="form-control"
+							th:field="${persona.Usuario}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="clave">Clave</label> <input
+							type="password" name="clave" class="form-control"
+							th:field="${persona.Clave}">
+					</div>
+
+
+					<a href="/user/listar" class="btn btn-secondary">Atras</a>
+					<button type="submit" class="btn btn-primary">Enviar</button>
+
+
+				</form>
+
+
+
+			</div>
 		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="nombre">Nombre</label>
-			<input type="text" name="nombre" class="form-control" th:field="${persona.Nombre}">
-		</div>
-		
-		
-		<div class="mb-3">
-			<label class="form-label" for="correo">Correo</label>
-			<input type="email" name="correo" class="form-control" th:field="${persona.Correo}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="usuario">Usuario</label>
-			<input type="text" name="usuario" class="form-control" th:field="${persona.Usuario}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="clave">Clave</label>
-			<input type="password" name="clave" class="form-control" th:field="${persona.Clave}">
-		</div>
-		
-		
-		<a href="/user/listar" class="btn btn-secondary">Atras</a>
-		<button type="submit" class="btn btn-primary">Enviar</button>
-		
-		
-		</form>
-		
-		
-			
-		</div>
+	</div>
 </body>
 </html>

@@ -41,5 +41,10 @@ public class PersonaService implements IPersonaService {
 		data.deleteById(id);
 		
 	}
+
+	@Override
+	public List<Persona> findByUsuarioAndClave(String username, String password) {
+		return data.findByUsuarioAndClave(username, password);
+	}
 	
 }

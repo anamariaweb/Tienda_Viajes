@@ -5,39 +5,46 @@
 <body>
 
 	<header th:replace="layouts/base::header"></header>
-	<div class="container mt=4">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				<h1>LISTA DE USUARIOS</h1>
 
+				<p>
+					<a class="btn btn-dark" href="/user/crear">Crear</a>
 
-		<h1>LISTA DE USUARIOS</h1>
-		<p>
-			<a class="btn btn-primary" href="/user/crear">Crear</a>
-		</p>
-		<table class="table table-bordered border-primary">
-			<thead>
-				<tr>
-					<th>CEDULA</th>
-					<th>NOMBRE</th>
-					<th>CORREO</th>
-					<th>USUARIO</th>
-					<th>PASSWORD</th>
-					<th>ACCIONES</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="persona:${personas}">
-					<td th:text="${persona.Cedula}"></td>
-					<td th:text="${persona.Nombre}"></td>
-					<td th:text="${persona.Correo}"></td>
-					<td th:text="${persona.Usuario}"></td>
-					<td th:text="${persona.Clave}"></td>
-					<td>
-						<a class="btn btn-outline-success" th:href="@{/user/editar/}+${persona.Cedula}">Editar</a> 
-						<a class="btn btn-outline-danger delete-item"  th:href="@{/user/eliminar(id=${persona.Cedula})}">Eliminar</a>
-					</td>
-				</tr>
-			</tbody>
-
-		</table>
+				</p>
+				
+				<div class="table-responsive">
+					<table class="table table-bordered border-white table-secondary table-hover">
+						<thead class="table-dark border-white">
+							<tr>
+								<th>CEDULA</th>
+								<th>NOMBRE</th>
+								<th>CORREO</th>
+								<th>USUARIO</th>
+								<th>PASSWORD</th>
+								<th>ACCIONES</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="persona:${personas}">
+								<td th:text="${persona.Cedula}"></td>
+								<td th:text="${persona.Nombre}"></td>
+								<td th:text="${persona.Correo}"></td>
+								<td th:text="${persona.Usuario}"></td>
+								<td th:text="${persona.Clave}"></td>
+								<td>
+									<a class="btn btn-outline-success" th:href="@{/user/editar/}+${persona.Cedula}">Editar</a>
+									<a class="btn btn-outline-danger delete-item" th:href="@{/user/eliminar/}+${persona.Cedula}">Eliminar</a>
+								</td>
+							</tr>
+						</tbody>
+	
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

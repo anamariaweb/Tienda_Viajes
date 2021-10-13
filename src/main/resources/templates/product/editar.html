@@ -3,51 +3,57 @@
 <head th:replace="layouts/base::head(titulo='EDITAR PRODUCTO')"></head>
 <body>
 	<header th:replace="layouts/base::header"></header>
-		<div class="container mt=4">
-		<h1>
-		EDITAR PRODUCTO
-		</h1>
-		
-		<form action="#" th:action="@{/product/guardar}" method="POST" th:object="${product}">
-		<div class="mb-3">
-			<label class="form-label" for="Codigo">CODIGO</label>
-			<input type="text" name="Codigo" class="form-control" th:field="${producto.Codigo}" readonly required="required">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				<h1>EDITAR PRODUCTO</h1>
+
+				<form action="#" th:action="@{/product/guardar}" method="POST"
+					th:object="${product}">
+					<div class="mb-3">
+						<label class="form-label" for="Codigo">CODIGO</label> <input
+							type="text" name="Codigo" class="form-control"
+							th:field="${producto.Codigo}" readonly required="required">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Nombre_Producto">Nombre
+							Producto</label> <input type="text" name="Nombre_Producto"
+							class="form-control" th:field="${producto.Nombre_Producto}">
+					</div>
+
+
+					<div class="mb-3">
+						<label class="form-label" for="NIT_Proveedor">NIT
+							Proveedor</label> <input type="text" name="NIT_proveedor"
+							class="form-control" th:field="${producto.NIT_Proveedor}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Precio_Producto">Precio
+							Producto</label> <input type="text" name="Precio_Producto"
+							class="form-control" th:field="${producto.Precio_Producto}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="Precio_Ventas">Precio
+							Ventas</label> <input type="text" name="Precio_Ventas"
+							class="form-control" th:field="${producto.Precio_Ventas}">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="IVA">IVA</label> <input type="text"
+							name="IVA" class="form-control" th:field="${producto.IVA}">
+					</div>
+
+
+					<a href="/product/listar" class="btn btn-secondary">Atras</a>
+					<button type="submit" class="btn btn-primary">Enviar</button>
+
+				</form>
+
+			</div>
 		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Nombre_Producto">Nombre Producto</label>
-			<input type="text" name="Nombre_Producto" class="form-control" th:field="${producto.Nombre_Producto}">
-		</div>
-		
-		
-		<div class="mb-3">
-			<label class="form-label" for="NIT_Proveedor">NIT Proveedor</label>
-			<input type="text" name="NIT_proveedor" class="form-control" th:field="${producto.NIT_Proveedor}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Precio_Producto">Precio Producto</label>
-			<input type="text" name="Precio_Producto" class="form-control" th:field="${producto.Precio_Producto}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="Precio_Ventas">Precio Ventas</label>
-			<input type="text" name="Precio_Ventas" class="form-control" th:field="${producto.Precio_Ventas}">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="IVA">IVA</label>
-			<input type="text" name="IVA" class="form-control" th:field="${producto.IVA}">
-		</div>
-		
-		
-		<a href="/product/listar" class="btn btn-secondary">Atras</a>
-		<button type="submit" class="btn btn-primary">Enviar</button>
-		
-		</form>
-		
-		
-			
-		</div>
+	</div>
 </body>
 </html>

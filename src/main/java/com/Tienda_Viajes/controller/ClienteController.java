@@ -26,6 +26,7 @@ public class ClienteController {
 	public String listar(Model model) {
 		List<Cliente> cliente = service.listar();
 		model.addAttribute("clientes", cliente);
+		
 		return "client/index";
 	}
 

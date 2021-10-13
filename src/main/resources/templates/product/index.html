@@ -5,41 +5,47 @@
 <body>
 
 	<header th:replace="layouts/base::header"></header>
-	<div class="container mt=4">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				
 
-
-		<h1>LISTA DE PRODUCTOS</h1>
-		<p>
-			<a class="btn btn-primary" href="/product/crear">Crear</a>
-		</p>
-		<table class="table table-bordered border-primary">
-			<thead>
-				<tr>
-					<th>CODIGO</th>
-					<th>NOMBRE PRODUCTO</th>
-					<th>NIT PROVEEDOR</th>
-					<th>PRECIO PRODUCTO</th>
-					<th>PRECIO VENTAS</th>
-					<th>IVA</th>
-					<th>ACCIONES</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr th:each="producto:${productos}">
-					<td th:text="${producto.Codigo}"></td>
-					<td th:text="${producto.Nombre_Producto}"></td>
-					<td th:text="${producto.NIT_Proveedor}"></td>
-					<td th:text="${producto.Precio_Producto}"></td>
-					<td th:text="${producto.Precio_Ventas}"></td>
-					<td th:text="${producto.IVA}"></td>
-					<td> 
-						<a class="btn btn-outline-success" th:href="@{/product/editar/}+${producto.Codigo}">Editar</a> 
-						<a class="btn btn-outline-danger delete-item"  th:href="@{/product/eliminar/}+${producto.Codigo}">Eliminar</a>
-					</td>
-				</tr>
-			</tbody>
-
-		</table>
+				<h1>LISTA DE PRODUCTOS</h1>
+				<p>
+					<a class="btn btn-dark" href="/product/crear">Crear</a>
+				</p>
+				<div class="table-responsive">
+					<table class="table table-bordered border-white table-secondary table-hover">
+						<thead class="table-dark border-white">
+							<tr>
+								<th>CODIGO</th>
+								<th>NOMBRE PRODUCTO</th>
+								<th>NIT PROVEEDOR</th>
+								<th>PRECIO PRODUCTO</th>
+								<th>PRECIO VENTAS</th>
+								<th>IVA</th>
+								<th>ACCIONES</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="producto:${productos}">
+								<td th:text="${producto.Codigo}"></td>
+								<td th:text="${producto.Nombre_Producto}"></td>
+								<td th:text="${producto.NIT_Proveedor}"></td>
+								<td th:text="${producto.Precio_Producto}"></td>
+								<td th:text="${producto.Precio_Ventas}"></td>
+								<td th:text="${producto.IVA}"></td>
+								<td>
+									<a class="btn btn-outline-success" th:href="@{/product/editar/}+${producto.Codigo}">Editar</a>
+									<a class="btn btn-outline-danger delete-item" th:href="@{/product/eliminar/}+${producto.Codigo}">Eliminar</a>
+								</td>
+							</tr>
+						</tbody>
+	
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

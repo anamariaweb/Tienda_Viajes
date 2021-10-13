@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts/base::head(titulo='REPORTES')"></head>
+
+
+
+<body>
+
+	<header th:replace="layouts/base::header"></header>
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+
+
+				<h1>REPORTES</h1>
+
+
+			
+				<ul class="list-group">
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<a th:href="@{/user/listar}" class="h4 text-decoration-none text-secondary " > Usuarios </a> <span class="badge bg-primary rounded-pill" th:text="${numero_usuario}" ></span>
+					</li>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<a th:href="@{/client/listar}" class="h4 text-decoration-none text-secondary"> Clientes </a> <span class="badge bg-primary rounded-pill" th:text="${numero_cliente}" ></span>
+					</li>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<a
+						th:href="@{/provider/listar}" class="h4 text-decoration-none text-secondary" >	Proveedores </a> <span class="badge bg-primary rounded-pill" th:text="${numero_proveedor}" ></span>
+					</li>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<a th:href="@{/product/listar}"	class="h4 text-decoration-none text-secondary"> Productos </a> <span class="badge bg-primary rounded-pill" th:text="${numero_producto}" ></span>
+					</li>
+					<li
+						class="list-group-item d-flex justify-content-between align-items-center">
+						<a class="h4 text-decoration-none text-secondary">Ventas por Cliente</a>
+					</li>
+					
+				</ul>
+
+				
+			</div>
+		</div>
+	</div>
+
+
+
+</body>
+
+</html>

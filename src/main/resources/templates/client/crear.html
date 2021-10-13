@@ -3,44 +3,47 @@
 <head th:replace="layouts/base::head(titulo='CREAR CLIENTE')"></head>
 <body>
 	<header th:replace="layouts/base::header"></header>
-		<div class="container mt=4">
-		<h1> CREAR CLIENTE</h1>
-		
-		<form action="#" th:action="@{/client/guardar}" method="POST">
-		<div class="mb-3">
-			<label class="form-label" for="cedula">Cedula</label>
-			<input type="text" name="cedula" class="form-control" required="required">
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8 col-lg-6 col-xl-5 main-container p-5">
+				<h1>CREAR CLIENTE</h1>
+
+				<form action="#" th:action="@{/client/guardar}" method="POST">
+					<div class="mb-3">
+						<label class="form-label" for="cedula">Cedula</label> <input
+							type="text" name="cedula" class="form-control"
+							required="required">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="nombre">Nombre</label> <input
+							type="text" name="nombre" class="form-control">
+					</div>
+
+
+					<div class="mb-3">
+						<label class="form-label" for="direccion">Direccion</label> <input
+							type="text" name="direccion" class="form-control">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="telefono">Telefono</label> <input
+							type="text" name="telefono" class="form-control">
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label" for="correo">Correo</label> <input
+							type="email" name="correo" class="form-control">
+					</div>
+
+
+					<a href="/client/listar" class="btn btn-secondary">Atras</a>
+					<button type="submit" class="btn btn-primary">Enviar</button>
+
+				</form>
+
+			</div>
 		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="nombre">Nombre</label>
-			<input type="text" name="nombre" class="form-control">
-		</div>
-		
-		
-		<div class="mb-3">
-			<label class="form-label" for="direccion">Direccion</label>
-			<input type="text" name="direccion" class="form-control">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="telefono">Telefono</label>
-			<input type="text" name="telefono" class="form-control">
-		</div>
-		
-		<div class="mb-3">
-			<label class="form-label" for="correo">Correo</label>
-			<input type="email" name="correo" class="form-control">
-		</div>
-		
-		
-		<a href="/client/listar" class="btn btn-secondary">Atras</a>
-		<button type="submit" class="btn btn-primary">Enviar</button>
-		
-		</form>
-		
-		
-			
-		</div>
+	</div>
 </body>
 </html>
