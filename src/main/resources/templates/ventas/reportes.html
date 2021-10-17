@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts/base::head(titulo='VENTAS POR CLIENTE')"></head>
+<body>
+
+	<header th:replace="layouts/base::header"></header>
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-12 col-md-8  main-container p-5">
+				<h1>VENTAS POR CLIENTE</h1>
+
+
+				<table class="table table-bordered border-white table-secondary table-hover">
+						<thead class="table-dark border-white">
+						<tr>
+							<th>CEDULA CLIENTE</th>
+							<th>NOMBRE CLIENTE</th>
+							<th>CANTIDAD</th>
+							<th>VALOR ANTES IVA</th>
+							<th>IVA</th>
+							<th>VALOR FACTURA</th>
+
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="r:${facturas}">
+							<td th:text="${r.cedula_C}"></td>
+							<td th:text="${r.nombre_C}"></td>
+							<td th:text="${r.cantidad}"></td>
+							<td th:text="${r.valor_Vta}"></td>
+							<td th:text="${r.valor_Iva}"></td>
+							<td th:text="${r.valor_Total}"></td>
+
+
+
+
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

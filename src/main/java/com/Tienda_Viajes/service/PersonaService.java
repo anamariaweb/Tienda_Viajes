@@ -29,6 +29,7 @@ public class PersonaService implements IPersonaService {
 	@Override
 	public int save(Persona persona) {
 		
+		persona.setClave("ebcript");
 		if (data.save(persona) != null) {
 			return 1;
 		}

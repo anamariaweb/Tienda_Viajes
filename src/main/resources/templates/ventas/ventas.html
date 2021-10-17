@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts/base::head(titulo='VENTAS')"></head>
+
+<body onload="showHour()">
+	<header th:replace="layouts/base::header"></header>
+	<div class="container-fluid py-5 vh-100 gradient-custom">
+		<div class="row d-flex justify-content-center align-items-center">
+			<div class="col-10 main-container p-5 overflow-scroll">
+				<h1>VENTAS</h1>
+
+
+				<form th:action="@{/venta/saveFactura}" method="POST">
+
+					<div class="Contenido_Ventas_Informacion">
+
+						<table class="tabla_Datos">
+							<tr>
+								<td><label>Usuario </label></td>
+								<td><select id="selectUsuario"
+									onchange="completarUsuario()" class="tabla_td_select">
+										<option value="0">Seleccione el usuario:</option>
+										<option th:each="u: ${personas}" th:text="${u.Nombre}"
+											th:value="${u.Cedula}"></option>
+								</select></td>
+
+								<td><input id="inputPersona" class=" border_input"
+									required="required" type="text" name="cedula_U"></td>
+							</tr>
+							<tr>
+								<td><label>Cliente </label></td>
+								<td><select id="selectCliente"
+									onchange="completarCliente()" class="tabla_td_select">
+										<option value="0">Seleccione el cliente:</option>
+										<option th:each="c: ${clientes}" th:text="${c.Nombre}"
+											th:value="${c.Cedula}"></option>
+
+
+								</select> <input id="nombre_Cli_Vta" name="nombre_C" type="hidden"
+									value="" /></td>
+
+
+								<td><input id="inputCliente" class=" border_input"
+									required="required" type="text" name="cedula_C"></td>
+
+							</tr>
+							<tr>
+								<td><label>Fecha y Hora </label></td>
+								<td><input id="FechaActual" type="text" name="datos_Fecha"
+									class=" border_input tabla_td_select"></td>
+
+								<td><input id="HoraActual" type="text" name="datos_Hora"
+									class=" border_input tabla_td_select"></td>
+							</tr>
+
+
+						</table>
+
+						<table class="tabla_CodigoTotales">
+							<tr>
+								<td><label>Factura </label></td>
+								<td><input type="text" name="codigo_Vta"
+									disabled="disabled" class=" border_input tabla_td_select"
+									style="text-align: center;"></td>
+
+							</tr>
+
+							<tr>
+								<td><label>Valor Factura </label></td>
+								<td><input style="text-align: center" id="datoValorFactura"
+									type="text" name="" class=" border_input tabla_td_select "></td>
+							</tr>
+
+							<tr>
+								<td><label>Valor IVA </label></td>
+								<td><input style="text-align: center" id="datoValorIVA"
+									type="text" name="" class=" border_input tabla_td_select"></td>
+
+
+							</tr>
+
+
+						</table>
+
+					</div>
+
+					<div class="Contenido_Ventas_Factura">
+						<table class="tabla_Factura ">
+
+							<tr>
+								<th class="bordes_Tabla color_Gris">Cod. Producto</th>
+								<th class="bordes_Tabla color_Gris">Nombre Producto</th>
+								<th class="bordes_Tabla color_Gris">Precio Venta</th>
+								<th class="bordes_Tabla color_Gris">Cantidad</th>
+								<th class="bordes_Tabla color_Gris">Vlr. Total</th>
+								<th></th>
+							</tr>
+
+							<tr>
+								<td class="bordes_Tabla"><input id="inputProducto1"
+									type="text" name="cod_Producto" class=" border_input"
+									disabled="disabled"></td>
+
+								<td class="bordes_Tabla"><select id="selectProducto1"
+									onchange="completarProducto1()" class="tabla_td_select">
+										<option value="0">Seleccione el producto:</option>
+										<option th:each="p: ${producto}"
+											th:text="${p.Nombre_Producto}" th:value="${p.Codigo}"></option>
+								</select></td>
+
+								<td class="bordes_Tabla"><input id="precio_SinIVA1"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="precio_SinIVA" disabled="disabled"></td>
+
+								<td class="bordes_Tabla"><input id="cantidadProducto1"
+									onchange="hallarValorTotalSinIVA1()"
+									class="cantidad-input border_input tabla_td_select"
+									style="text-align: center;" type="text"></td>
+
+								<td class="bordes_Tabla"><input id="inputTotalSinIVA1"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="valor_sinIVA"></td>
+
+								<td style="text-align: center;"><a
+									class="btn btn-danger btn-sm delete-row">Eliminar</a></td>
+
+							</tr>
+
+							<tr>
+								<td class="bordes_Tabla"><input id="inputProducto2"
+									type="text" name="cod_Producto" class=" border_input"
+									disabled="disabled"></td>
+
+								<td class="bordes_Tabla"><select id="selectProducto2"
+									onchange="completarProducto2()" class="tabla_td_select">
+										<option value="0">Seleccione el producto:</option>
+										<option th:each="p: ${producto}"
+											th:text="${p.Nombre_Producto}" th:value="${p.Codigo}"></option>
+								</select></td>
+
+								<td class="bordes_Tabla"><input id="precio_SinIVA2"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="precio_SinIVA" disabled="disabled"></td>
+
+								<td class="bordes_Tabla"><input id="cantidadProducto2"
+									onchange="hallarValorTotalSinIVA2()"
+									class="cantidad-input border_input tabla_td_select"
+									style="text-align: center;" type="text"></td>
+
+								<td class="bordes_Tabla"><input id="inputTotalSinIVA2"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="valor_sinIVA"></td>
+
+								<td style="text-align: center;"><a
+									class="btn btn-danger btn-sm delete-row">Eliminar</a></td>
+
+							</tr>
+
+							<tr>
+								<td class="bordes_Tabla"><input id="inputProducto3"
+									type="text" name="cod_Producto" class=" border_input"
+									disabled="disabled"></td>
+
+								<td class="bordes_Tabla"><select id="selectProducto3"
+									onchange="completarProducto3()" class="tabla_td_select">
+										<option value="0">Seleccione el producto:</option>
+										<option th:each="p: ${producto}"
+											th:text="${p.Nombre_Producto}" th:value="${p.Codigo}"></option>
+								</select></td>
+
+								<td class="bordes_Tabla"><input id="precio_SinIVA3"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="precio_SinIVA" disabled="disabled"></td>
+
+								<td class="bordes_Tabla"><input id="cantidadProducto3"
+									onchange="hallarValorTotalSinIVA3()"
+									class="cantidad-input border_input tabla_td_select"
+									style="text-align: center;" type="text"></td>
+
+								<td class="bordes_Tabla"><input id="inputTotalSinIVA3"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="valor_sinIVA"></td>
+
+								<td style="text-align: center;"><a
+									class="btn btn-danger btn-sm delete-row">Eliminar</a></td>
+
+
+							</tr>
+
+							<tr>
+								<td rowspan="3 " colspan="3"></td>
+
+								<td class="bordes_Tabla"><label class="padding-left"
+									for="sub_Total_Factura"> Sub. Total Factura </label></td>
+
+								<td class="bordes_Tabla"><input id="inputSubTotalSinIVA"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="valor_Vta"></td>
+								<td></td>
+
+							</tr>
+							<tr>
+
+								<td class="bordes_Tabla"><label class="padding-left"
+									for="valor_IVA"> Valor IVA </label></td>
+								<td class="bordes_Tabla"><input id="inputValorIVA"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="valor_Iva"></td>
+								<td></td>
+
+							</tr>
+
+							<tr>
+
+								<td class="bordes_Tabla"><label class="padding-left"
+									for="total_Factura"> Total Factura </label></td>
+								<td class="bordes_Tabla"><input id="inputValorTotalFactura"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="text"
+									name="valor_Total"></td>
+
+
+								<td style="text-align: center;"><button type="submit"
+										name="consultar_Usuarios">Facturar</button>
+								<td class="bordes_Tabla"><input id="cantidadP"
+									class=" border_input tabla_td_select"
+									style="text-align: right; padding-right: 30px;" type="hidden"
+									name="cantidad"></td>
+								<td></td>
+
+							</tr>
+						</table>
+
+
+					</div>
+
+				</form>
+			</div>
+		</div>
+	</div>
+
+
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var productos = /*[[${producto}]]*/'default';
+		/*]]>*/
+	</script>
+	document.addEventListener('DOMContentLoaded', () => {
+	document.querySelectorAll('input[type=text]').forEach( node =>
+	node.addEventListener('keypress', e => { if(e.keyCode == 13) {
+	e.preventDefault(); } })) });
+	</script>
+
+
+</body>
+
+</html>

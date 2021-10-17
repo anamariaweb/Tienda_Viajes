@@ -16,10 +16,11 @@ import com.Tienda_Viajes.model.Persona;
 
 @Controller
 @RequestMapping("/user")
-public class UsuarioControlador {
+public class UsuarioController {
 
 	@Autowired
 	private IPersonaService service;
+
 
 	@GetMapping("/listar")
 	public String listar(Model model) {
@@ -34,6 +35,8 @@ public class UsuarioControlador {
 		return "redirect:/user/listar";
 
 	}
+	
+	
 
 	@GetMapping("/eliminar/{Cedula}")
 	public String eliminar(@PathVariable int Cedula) {

@@ -13,4 +13,5 @@ public interface IPersonaService {
 	public void delete(int id);
 	public List<Persona> findByUsuarioAndClave(String username, String password);
 	
+	
 }
