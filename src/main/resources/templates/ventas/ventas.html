@@ -189,7 +189,7 @@
 									name="valor_sinIVA"></td>
 
 								<td style="text-align: center;"><a
-									class="btn btn-danger btn-sm delete-row">Eliminar</a></td>
+									class="btn btn-danger btn-sm  delete-row delete-item">Eliminar</a></td>
 
 
 							</tr>
@@ -221,22 +221,21 @@
 
 							<tr>
 
-								<td class="bordes_Tabla"><label class="padding-left"
-									for="total_Factura"> Total Factura </label></td>
-								<td class="bordes_Tabla"><input id="inputValorTotalFactura"
-									class=" border_input tabla_td_select"
+								<td class="bordes_Tabla">
+									<label class="padding-left"for="total_Factura"> Total Factura </label>
+								</td>
+								<td class="bordes_Tabla">
+									<input id="inputValorTotalFactura"class=" border_input tabla_td_select"
 									style="text-align: right; padding-right: 30px;" type="text"
-									name="valor_Total"></td>
+									name="valor_Total">
+								</td>
 
 
-								<td style="text-align: center;"><button type="submit"
-										name="consultar_Usuarios">Facturar</button>
-								<td class="bordes_Tabla"><input id="cantidadP"
-									class=" border_input tabla_td_select"
-									style="text-align: right; padding-right: 30px;" type="hidden"
-									name="cantidad"></td>
-								<td></td>
-
+								<td style="text-align: center;">
+									<button class="btn btn-outline-dark btn-lg px-3" name="consultar_Usuarios">Facturar</button>
+								<td class="bordes_Tabla">
+									<input id="cantidadP"class=" border_input tabla_td_select" style="text-align: right; padding-right: 30px;" type="hidden" name="cantidad"></td>
+								
 							</tr>
 						</table>
 
